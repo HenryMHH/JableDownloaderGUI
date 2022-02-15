@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
-		<title>Hello World!</title>
+		<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" /> -->
+		<title>Jable Downloader</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
 	</head>
 	<body>
-		Title: <input id="title" />
-		<button id="btn" type="button">Set</button>
-		<button id="getBtn">GET</button>
-		<div id="target"></div>
-		<script src="./lib/renderer.js"></script>
+		<div id="root">
+		<script src="./dist/renderer.js"></script>
 	</body>
 </html>

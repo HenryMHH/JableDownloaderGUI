@@ -1,8 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-import * as path from 'path'
+import path from 'path'
 import fs from 'fs'
-import axios from 'axios'
-import cheerio from 'cheerio'
 import { GetListService } from './service/getListService'
 
 function createWindow() {
@@ -14,34 +12,32 @@ function createWindow() {
 		},
 		width: 800,
 	})
+
 	mainWindow.loadFile(path.join(__dirname, '../index.html'))
-	mainWindow.webContents.openDevTools()
-	fs.watch('./lib', { recursive: true }, () => {
+	mainWindow.webContents.openDevTools({ mode: 'detach' })
+	fs.watch('./dist', { recursive: true }, () => {
 		mainWindow.reload()
 	})
 }
 
-function handleSetTitle(event, title) {
-	const webContents = event.sender
-	const win = BrowserWindow.fromWebContents(webContents)
-	// console.log(title)
-	win.setTitle(title)
-}
-
-async function getActorList() {
+async function getMaximumPage() {
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	const getListService = new GetListService()
-	const reuslt = await getListService.getList(1)
+	const reuslt: number = await getListService.getMaximumPage()
+	focusedWindow.webContents.send('returnMaxPage', reuslt)
+}
 
-	focusedWindow.webContents.send('TT', reuslt)
+function reloadForFetch() {
+	const focusedWindow = BrowserWindow.getFocusedWindow()
+	focusedWindow.reload()
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-	ipcMain.on('test', handleSetTitle)
-	ipcMain.on('fetchData', getActorList)
+	ipcMain.on('fetchMaxPage', getMaximumPage)
+	ipcMain.on('reloadForFetch', reloadForFetch)
 	createWindow()
 
 	app.on('activate', function () {

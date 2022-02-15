@@ -1,6 +1,5 @@
-import axios from 'axios'
+import Axios from '../utils/Axios'
 import cheerio from 'cheerio'
-
 interface ListItem {
 	name: string
 	number: string
@@ -12,15 +11,22 @@ export class GetListService {
 	private maximumPage = 5
 	public actorList: Array<ListItem> = []
 
-	async getMaximumPage() {
-		const result = await axios(this.initialUrl)
-		const $ = cheerio.load(result.data)
-		const list = $('ul.pagination').find('a')
-		if (list.length > 0) {
-			this.maximumPage = parseInt(list[list.length - 1].attribs.href.split('/')[2])
-		} else {
-			this.maximumPage = 0
+	async getMaximumPage(): Promise<number> {
+		let result
+		try {
+			result = await Axios(this.initialUrl)
+			const $ = cheerio.load(result.data)
+			const list = $('ul.pagination').find('a')
+			if (list.length > 0) {
+				this.maximumPage = parseInt(list[list.length - 1].attribs.href.split('/')[2])
+			} else {
+				this.maximumPage = 0
+			}
+		} catch (error) {
+			console.log(error)
 		}
+
+		return this.maximumPage
 	}
 
 	sleep() {
@@ -37,7 +43,7 @@ export class GetListService {
 		if (this.maximumPage > 0) {
 			for (let i = 2; i <= this.maximumPage; i++) {
 				console.log(this.initialUrl + `&from=${i}&_=${Date.now()}`)
-				const result = await axios(this.initialUrl + `&from=${i}&_=${Date.now()}`)
+				const result = await Axios(this.initialUrl + `&from=${i}&_=${Date.now()}`)
 				const $ = cheerio.load(result.data)
 				$('div.horizotal-img-box')
 					.find('a')
