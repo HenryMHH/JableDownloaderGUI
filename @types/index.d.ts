@@ -1,9 +1,11 @@
 export declare global {
 	interface Window {
 		electronAPI: {
-			fetchMaxPage: () => void
-			getMaxPage: (cb: Function) => void
-			reloadForFetch: () => void
+			getActorListByPage: (page: number) => void
+			infoSetter: (cb: Function) => void
+			reloadWindow: () => void
+			getVideoListByActorLink: (url: string) => void
+			actorVideoListSetter: (cb: Function) => void
 		}
 	}
 }

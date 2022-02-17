@@ -6,7 +6,7 @@ const StyledBg = styled(Box)`
 	position: absolute;
 	height: 100vh;
 	width: 100vw;
-	background: black;
+	background: #fe628e;
 	justify-content: center;
 	align-items: center;
 `
@@ -26,7 +26,7 @@ const ContentBox = styled(Box)`
 export default function Opening() {
 	const [isVanished, setIsVanished] = useState(false)
 	useEffect(() => {
-		setTimeout(() => setIsVanished(true), 1000)
+		setTimeout(() => setIsVanished(true), 2000)
 	}, [])
 	return (
 		<StyledBg display={!isVanished ? 'flex' : 'none'}>

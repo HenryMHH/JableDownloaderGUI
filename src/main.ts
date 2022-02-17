@@ -1,7 +1,7 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, IpcMainEvent } from 'electron'
 import path from 'path'
 import fs from 'fs'
-import { GetListService } from './service/getListService'
+import { GetListService, InitInfo } from './service/getListService'
 
 function createWindow() {
 	// Create the browser window.
@@ -11,6 +11,9 @@ function createWindow() {
 			preload: path.join(__dirname, 'preload.js'),
 		},
 		width: 800,
+		autoHideMenuBar: true,
+		resizable: false,
+		titleBarStyle: 'hidden',
 	})
 
 	mainWindow.loadFile(path.join(__dirname, '../index.html'))
@@ -20,11 +23,18 @@ function createWindow() {
 	})
 }
 
-async function getMaximumPage() {
+async function getActorListByPage(event: IpcMainEvent, page: number) {
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	const getListService = new GetListService()
-	const reuslt: number = await getListService.getMaximumPage()
-	focusedWindow.webContents.send('returnMaxPage', reuslt)
+	const result: InitInfo = await getListService.getActorListByPage(page)
+	focusedWindow.webContents.send('returnInfo', result)
+}
+
+async function getVideoListByActorLink(evnet: IpcMainEvent, url: string) {
+	const focusedWindow = BrowserWindow.getFocusedWindow()
+	const getListService = new GetListService()
+	const result = await getListService.getVideoListByActorLink(url)
+	focusedWindow.webContents.send('returnVideoList', result)
 }
 
 function reloadForFetch() {
@@ -36,8 +46,10 @@ function reloadForFetch() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-	ipcMain.on('fetchMaxPage', getMaximumPage)
-	ipcMain.on('reloadForFetch', reloadForFetch)
+	ipcMain.on('getActorListByPage', getActorListByPage)
+	// ipcMain.on('fetchActorListByPage', getListByPage)
+	ipcMain.on('reloadWindow', reloadForFetch)
+	ipcMain.on('getVideoListByActorLink', getVideoListByActorLink)
 	createWindow()
 
 	app.on('activate', function () {

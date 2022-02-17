@@ -1,7 +1,8 @@
 const path = require('path')
 
 module.exports = {
-	mode: 'production',
+	mode: 'development',
+	devtool: 'source-map',
 	entry: { renderer: './src/renderer.ts', preload: './src/preload.ts', main: './src/main.ts' },
 	output: {
 		path: path.resolve(__dirname, 'dist'),

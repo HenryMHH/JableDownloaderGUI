@@ -21,7 +21,6 @@
 		"@emotion/styled": "^11",
 		"@types/react": "^17.0.39",
 		"@types/react-dom": "^17.0.11",
-		"@types/user-agents": "^1.0.2",
 		"axios": "^0.25.0",
 		"cheerio": "^1.0.0-rc.10",
 		"concurrently": "^7.0.0",
@@ -29,7 +28,6 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-icons": "^4.3.1",
-		"ts-loader": "^9.2.6",
-		"user-agents": "^1.0.928"
+		"ts-loader": "^9.2.6"
 	}
 }
