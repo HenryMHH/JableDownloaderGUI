@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-	mode: 'development',
+	mode: process.env.NODE_ENV,
 	devtool: 'source-map',
 	entry: { renderer: './src/renderer.ts', preload: './src/preload.ts', main: './src/main.ts' },
 	output: {

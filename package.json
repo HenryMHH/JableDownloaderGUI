@@ -3,7 +3,15 @@
 	"version": "1.0.0",
 	"main": "./dist/main.js",
 	"license": "MIT",
+	"author": "Henry Ho",
+	"description": "只是個side project，請各位紳士慢用",
 	"devDependencies": {
+		"@electron-forge/cli": "^6.0.0-beta.63",
+		"@electron-forge/maker-deb": "^6.0.0-beta.63",
+		"@electron-forge/maker-rpm": "^6.0.0-beta.63",
+		"@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+		"@electron-forge/maker-zip": "^6.0.0-beta.63",
+		"cross-env": "^7.0.3",
 		"electron": "^16.0.7",
 		"ts-node": "^10.4.0",
 		"typescript": "^4.5.5",
@@ -11,9 +19,12 @@
 		"webpack-cli": "^4.9.2"
 	},
 	"scripts": {
-		"start": "electron .",
+		"start": "electron-forge start",
 		"build": "tsc -w",
-		"webp": "webpack"
+		"webp:d": "cross-env NODE_ENV=development webpack",
+		"webp:p": "cross-env NODE_ENV=production webpack",
+		"package": "electron-forge package",
+		"make": "electron-forge make"
 	},
 	"dependencies": {
 		"@chakra-ui/react": "^1.8.3",
@@ -24,10 +35,38 @@
 		"axios": "^0.25.0",
 		"cheerio": "^1.0.0-rc.10",
 		"concurrently": "^7.0.0",
+		"electron-squirrel-startup": "^1.0.0",
 		"framer-motion": "^6",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-icons": "^4.3.1",
 		"ts-loader": "^9.2.6"
+	},
+	"config": {
+		"forge": {
+			"packagerConfig": {},
+			"makers": [
+				{
+					"name": "@electron-forge/maker-squirrel",
+					"config": {
+						"name": "jbdelectron"
+					}
+				},
+				{
+					"name": "@electron-forge/maker-zip",
+					"platforms": [
+						"darwin"
+					]
+				},
+				{
+					"name": "@electron-forge/maker-deb",
+					"config": {}
+				},
+				{
+					"name": "@electron-forge/maker-rpm",
+					"config": {}
+				}
+			]
+		}
 	}
 }

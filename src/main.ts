@@ -3,6 +3,8 @@ import path from 'path'
 import fs from 'fs'
 import { GetListService, InitInfo } from './service/getListService'
 
+const isDev: boolean = process.env.NODE_ENV === 'development' ? true : false
+
 function createWindow() {
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
@@ -17,10 +19,13 @@ function createWindow() {
 	})
 
 	mainWindow.loadFile(path.join(__dirname, '../index.html'))
-	mainWindow.webContents.openDevTools({ mode: 'detach' })
-	fs.watch('./dist', { recursive: true }, () => {
-		mainWindow.reload()
-	})
+
+	if (isDev) {
+		mainWindow.webContents.openDevTools({ mode: 'detach' })
+		fs.watch('./dist', { recursive: true }, () => {
+			mainWindow.reload()
+		})
+	}
 }
 
 async function getActorListByPage(event: IpcMainEvent, page: number) {
