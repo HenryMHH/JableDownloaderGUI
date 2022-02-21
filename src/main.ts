@@ -1,7 +1,9 @@
-import { app, BrowserWindow, ipcMain, IpcMainEvent } from 'electron'
+import { app, BrowserWindow, ipcMain, IpcMainEvent, dialog } from 'electron'
 import path from 'path'
 import fs from 'fs'
 import { GetListService, InitInfo } from './service/getListService'
+import { DownloadService } from './service/downloadService'
+import Axios from './utils/Axios'
 
 const isDev: boolean = process.env.NODE_ENV === 'development' ? true : false
 
@@ -42,6 +44,43 @@ async function getVideoListByActorLink(evnet: IpcMainEvent, url: string) {
 	focusedWindow.webContents.send('returnVideoList', result)
 }
 
+async function initDownload(event: IpcMainEvent, { link, rootPath }: { link: string; rootPath: string }) {
+	const focusedWindow = BrowserWindow.getFocusedWindow()
+	const downloadService = new DownloadService()
+	const downloadInfo = await downloadService.initDownload(link)
+	if (downloadInfo.tsFileArray.length > 0) {
+		const dir = rootPath + '/' + downloadInfo.folderName
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir)
+		} else {
+			focusedWindow.webContents.send('error', '資料夾已存在，下載程序中斷')
+			return
+		}
+		for (let i = 0; i < downloadInfo.tsFileArray.length; i++) {
+			const result = await Axios.get(downloadInfo.tsFileUrl + downloadInfo.tsFileArray[i])
+			fs.writeFile(dir + '/' + downloadInfo.tsFileArray[i], result.data, function (err) {
+				if (err) {
+					focusedWindow.webContents.send('error', err)
+					return
+				}
+			})
+		}
+	} else {
+		focusedWindow.webContents.send('error', '未獲取下載連結')
+	}
+}
+
+async function setupRootFolder() {
+	const focusedWindow = BrowserWindow.getFocusedWindow()
+	const getFolderPath = await dialog.showOpenDialog({
+		properties: ['openDirectory'],
+	})
+
+	if (!getFolderPath.canceled) {
+		focusedWindow.webContents.send('returnRootPath', getFolderPath.filePaths[0])
+	}
+}
+
 function reloadForFetch() {
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	focusedWindow.reload()
@@ -55,6 +94,8 @@ app.on('ready', () => {
 	// ipcMain.on('fetchActorListByPage', getListByPage)
 	ipcMain.on('reloadWindow', reloadForFetch)
 	ipcMain.on('getVideoListByActorLink', getVideoListByActorLink)
+	ipcMain.on('initDownload', initDownload)
+	ipcMain.on('setupRootFolder', setupRootFolder)
 	createWindow()
 
 	app.on('activate', function () {

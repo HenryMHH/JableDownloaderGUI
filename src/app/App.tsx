@@ -5,7 +5,7 @@ import { ActorVideoInfo, ActorVideoItem, InitInfo, ListItem } from '../service/g
 import Footer from './components/Footer'
 import TitleBar from './components/TitleBar'
 import Opening from './components/Opening'
-import Table from './components/Table'
+import Table from './components/Table/Table'
 import Header from './components/Header'
 
 function handleInitInfo() {
@@ -24,6 +24,9 @@ export default function App() {
 	}
 
 	useEffect(() => {
+		window.electronAPI.errorMessenger((e, message: string) => {
+			alert(message)
+		})
 		window.electronAPI.infoSetter((event: IpcRendererEvent, value: InitInfo) => {
 			setMaxPage(value.maxListPage)
 			setActorList(value.actorList)

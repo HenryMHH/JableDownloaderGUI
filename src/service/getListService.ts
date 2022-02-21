@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 import cheerio from 'cheerio'
 import https from 'https'
+import { dialog } from 'electron'
 
 /**
  * * name 女優名 string

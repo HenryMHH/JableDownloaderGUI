@@ -1,7 +1,8 @@
-import { Box, Image } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Image, useDisclosure } from '@chakra-ui/react'
 import styled from '@emotion/styled'
-import React from 'react'
-import { ActorVideoItem, ListItem } from '../../service/getListService'
+import React, { useRef } from 'react'
+import { ActorVideoItem, ListItem } from '../../../service/getListService'
+import DownloadItem from './DownloadItem'
 
 const StyledTable = styled(Box)`
 	height: 80vh;
@@ -10,14 +11,6 @@ const StyledTable = styled(Box)`
 	padding: 5vh 5vw;
 	grid-column-gap: 10px;
 	grid-row-gap: 1em;
-`
-
-const StyledVideoListTable = styled(Box)`
-	height: 80vh;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	padding: 3vh 0 3px;
-	position: relative;
 `
 
 const TableItem = styled(Box)`
@@ -31,6 +24,21 @@ const TableItem = styled(Box)`
 		margin: -1px;
 	}
 `
+
+const StyledVideoListTable = styled(Box)`
+	height: 78vh;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding: 0 1rem 1rem;
+`
+
+const TitleBar = styled(Box)`
+	display: flex;
+	text-align: center;
+	backgroud: white;
+	padding: 0 1.5rem;
+`
+
 interface TableData {
 	actorList: ListItem[]
 	videoList: ActorVideoItem[]
@@ -40,6 +48,7 @@ export default function Table({ actorList = [], videoList = [] }: TableData) {
 	function getActorVideoList(url: string) {
 		window.electronAPI.getVideoListByActorLink(url)
 	}
+
 	return (
 		<>
 			{actorList.length > 0 && videoList.length === 0 ? (
@@ -59,27 +68,20 @@ export default function Table({ actorList = [], videoList = [] }: TableData) {
 			) : null}
 
 			{videoList.length > 0 ? (
-				<StyledVideoListTable>
-					<Box ml="5px" display="flex" textAlign="center" position="fixed" w="96.5vw" top="10vh" bg="white">
+				<Box>
+					<TitleBar>
 						<Box w="10vw">番號</Box>
 						<Box w="60vw">片名</Box>
 						<Box w="10vw">長度</Box>
 						<Box w="10vw">觀看數</Box>
 						<Box w="10vw">收藏數</Box>
-					</Box>
-					{videoList.map((item) => (
-						<TableItem key={item.indexNO}>
-							{/* <Image h="50px" src={item.imgSrc} /> */}
-							<Box ml="5px" display="flex">
-								<Box w="10vw">{item.indexNO}</Box>
-								<Box w="60vw">{item.title}</Box>
-								<Box w="10vw">{item.time}</Box>
-								<Box w="10vw">{item.views}</Box>
-								<Box w="10vw">{item.favorite}</Box>
-							</Box>
-						</TableItem>
-					))}
-				</StyledVideoListTable>
+					</TitleBar>
+					<StyledVideoListTable>
+						{videoList.map((item, index) => (
+							<DownloadItem item={item} key={item.title + `${index}`} />
+						))}
+					</StyledVideoListTable>
+				</Box>
 			) : null}
 		</>
 	)
