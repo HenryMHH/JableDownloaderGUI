@@ -98,14 +98,14 @@ export class GetListService {
 		return returnObj
 	}
 
-	async getVideoListByActorLink(url: string) {
+	async getVideoListByActorLink(url: string, page: number = 1) {
 		let result
 		const returnObj: ActorVideoInfo = {
 			maxListPage: this.maxVideoListPage,
 			videoList: [],
 		}
 		try {
-			result = await this.Axios.get(url + '?sort_by=total_video')
+			result = await this.Axios.get(url + `?sort_by=total_video&from=${page}`)
 			const $ = cheerio.load(result['data'])
 
 			const videos = $('h6.title > a').toArray()

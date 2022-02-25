@@ -5,7 +5,7 @@ export declare global {
 			getActorListByPage: (page: number) => void
 			infoSetter: (cb: Function) => void
 			reloadWindow: () => void
-			getVideoListByActorLink: (url: string) => void
+			getVideoListByActorLink: ({ url: string, page: number }) => void
 			actorVideoListSetter: (cb: Function) => void
 			initDownload: ({ link: string, rootPath: string }) => void
 			setupRootFolder: () => void

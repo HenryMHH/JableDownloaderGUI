@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import styled from '@emotion/styled'
 import { ListItem } from '../../service/getListService'
+import { Action, Page } from '../App'
 
 const PaginatorBox = styled(Box)`
 	display: flex;
@@ -26,46 +27,29 @@ const PageButton = styled(Box)`
 `
 
 interface FooterProps {
-	maxPage: number
-	setActorList?: React.Dispatch<ListItem[]>
-	maxVideoPage: number
+	videosPage: Page
+	actorsPage: Page
+	handleChangePage: (action: Action) => void
 }
 
-export default function Footer({ maxPage, maxVideoPage }: FooterProps) {
-	const [currentPage, setCurrentPage] = useState<number>(1)
+export default function Footer({ videosPage, actorsPage, handleChangePage }: FooterProps) {
 	const didMount = useRef(false)
-	function handleChangePage(action: 'plus' | 'minus' | 'toFirst' | 'toLast') {
-		switch (action) {
-			case 'plus':
-				if (currentPage < maxPage) {
-					setCurrentPage(currentPage + 1)
-				}
-				return
-			case 'minus':
-				if (currentPage > 1) {
-					setCurrentPage(currentPage - 1)
-				}
-				return
-			case 'toFirst':
-				setCurrentPage(1)
-				return
-			case 'toLast':
-				setCurrentPage(maxPage)
-				return
-			default:
-				return
-		}
-	}
-
 	useEffect(() => {
 		if (didMount.current) {
-			window.electronAPI.getActorListByPage(currentPage)
+			window.electronAPI.getActorListByPage(actorsPage.currentPage)
 		} else {
 			didMount.current = true
 		}
-	}, [currentPage])
+	}, [actorsPage.currentPage])
 
-	function paginator(maxPage: number) {
+	useEffect(() => {
+		if (videosPage.currentPage >= 1) {
+			// TODO: 這邊會有連打兩次的問題
+			window.electronAPI.getVideoListByActorLink({ url: localStorage.getItem('videoListUrl'), page: videosPage.currentPage })
+		}
+	}, [videosPage.currentPage])
+
+	function paginator(currentPage: number, maxPage: number) {
 		return (
 			<>
 				<PageButton onClick={() => handleChangePage('toFirst')}>{'<<'}</PageButton>
@@ -80,7 +64,7 @@ export default function Footer({ maxPage, maxVideoPage }: FooterProps) {
 	}
 	return (
 		<Box>
-			<PaginatorBox>{paginator(maxVideoPage || maxPage)}</PaginatorBox>
+			<PaginatorBox>{paginator(videosPage.currentPage || actorsPage.currentPage, videosPage.maxPage || actorsPage.maxPage)}</PaginatorBox>
 		</Box>
 	)
 }

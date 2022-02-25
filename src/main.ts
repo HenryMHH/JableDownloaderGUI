@@ -37,10 +37,10 @@ async function getActorListByPage(event: IpcMainEvent, page: number) {
 	focusedWindow.webContents.send('returnInfo', result)
 }
 
-async function getVideoListByActorLink(evnet: IpcMainEvent, url: string) {
+async function getVideoListByActorLink(evnet: IpcMainEvent, { url, page }: { url: string; page: number }) {
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	const getListService = new GetListService()
-	const result = await getListService.getVideoListByActorLink(url)
+	const result = await getListService.getVideoListByActorLink(url, page)
 	focusedWindow.webContents.send('returnVideoList', result)
 }
 

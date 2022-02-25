@@ -8,6 +8,7 @@ const StyledTable = styled(Box)`
 	height: 80vh;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(5, 1fr);
 	padding: 5vh 5vw;
 	grid-column-gap: 10px;
 	grid-row-gap: 1em;
@@ -42,20 +43,17 @@ const TitleBar = styled(Box)`
 interface TableData {
 	actorList: ListItem[]
 	videoList: ActorVideoItem[]
+	initActorVideoList: (url: string) => void
 }
 
-export default function Table({ actorList = [], videoList = [] }: TableData) {
-	function getActorVideoList(url: string) {
-		window.electronAPI.getVideoListByActorLink(url)
-	}
-
+export default function Table({ actorList = [], videoList = [], initActorVideoList }: TableData) {
 	return (
 		<>
 			{actorList.length > 0 && videoList.length === 0 ? (
 				<StyledTable>
 					{actorList.map((item) => {
 						return (
-							<TableItem key={item.href} onClick={() => getActorVideoList(item.href)}>
+							<TableItem key={item.href} onClick={() => initActorVideoList(item.href)}>
 								<Image h="70px" src={item.imgSrc} />
 								<Box ml="5px">
 									<Box>{item.name} </Box>
