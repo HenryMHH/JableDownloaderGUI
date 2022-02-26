@@ -6,7 +6,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 	infoSetter: (cb) => ipcRenderer.on('returnInfo', cb),
 	reloadWindow: () => ipcRenderer.send('reloadWindow'),
 	actorVideoListSetter: (cb) => ipcRenderer.on('returnVideoList', cb),
-	getVideoListByActorLink: (url: string) => ipcRenderer.send('getVideoListByActorLink', url),
+	getVideoListByActorLink: (props: { url: string; page: number }) => ipcRenderer.send('getVideoListByActorLink', props),
 	initDownload: (link: string) => ipcRenderer.send('initDownload', link),
 	setupRootFolder: () => ipcRenderer.send('setupRootFolder'),
 	returnRootPath: (cb) => ipcRenderer.on('returnRootPath', cb),

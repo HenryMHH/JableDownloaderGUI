@@ -5,9 +5,9 @@ export declare global {
 			getActorListByPage: (page: number) => void
 			infoSetter: (cb: Function) => void
 			reloadWindow: () => void
-			getVideoListByActorLink: ({ url: string, page: number }) => void
+			getVideoListByActorLink: (props: { url: string; page: number }) => void
 			actorVideoListSetter: (cb: Function) => void
-			initDownload: ({ link: string, rootPath: string }) => void
+			initDownload: ({ link, rootPath }: { link: string; rootPath: string }) => void
 			setupRootFolder: () => void
 			returnRootPath: (cb: Function) => void
 		}
