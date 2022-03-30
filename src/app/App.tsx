@@ -31,6 +31,8 @@ export default function App() {
 
 	useEffect(() => {
 		window.electronAPI.errorMessenger((e, message: string) => {
+			console.log(message)
+			return
 			alert(message)
 		})
 

@@ -48,22 +48,28 @@ async function initDownload(event: IpcMainEvent, { link, rootPath }: { link: str
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	const downloadService = new DownloadService()
 	const downloadInfo = await downloadService.initDownload(link)
+	focusedWindow.webContents.send('error', downloadInfo)
 	if (downloadInfo.tsFileArray.length > 0) {
 		const dir = rootPath + '/' + downloadInfo.folderName
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir)
 		} else {
-			focusedWindow.webContents.send('error', '資料夾已存在，下載程序中斷')
-			return
+			fs.rmdirSync(dir)
+			fs.mkdirSync(dir)
+			// focusedWindow.webContents.send('error', '資料夾已存在，下載程序中斷')
+			// return
 		}
-		for (let i = 0; i < downloadInfo.tsFileArray.length; i++) {
+		for (let i = 0; i < 2; i++) {
 			const result = await Axios.get(downloadInfo.tsFileUrl + downloadInfo.tsFileArray[i])
-			fs.writeFile(dir + '/' + downloadInfo.tsFileArray[i], result.data, function (err) {
+			// downloadService.decrypt(result.data, downloadInfo._IV, downloadInfo.URIContent)
+			fs.writeFile(dir + '/' + downloadInfo.tsFileArray[i].replace('ts', 'mp4'), downloadService.decrypt(result.data, downloadInfo._IV, downloadInfo.URIContent), function (err) {
 				if (err) {
 					focusedWindow.webContents.send('error', err)
 					return
 				}
 			})
+
+			// fs.writeFileSync(dir + '/' + downloadInfo.tsFileArray[i], downloadService.decrypt(result.data, downloadInfo._IV, downloadInfo.URIContent), 'binary')
 		}
 	} else {
 		focusedWindow.webContents.send('error', '未獲取下載連結')
