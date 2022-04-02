@@ -24,7 +24,7 @@ export async function beginDownload(event: IpcMainEvent, info: BeginDownloadInfo
 
 	const dir = rootPath + '/' + folderName
 	const mp4Name = folderName + '.mp4'
-	const mp4FileNameArray = tsFileArray.map((item) => item)
+	const mp4FileNameArray = tsFileArray.map((item) => item.replace('ts', 'mp4'))
 	const mp4FullPath = dir + '/' + mp4Name
 
 	if (!fs.existsSync(dir)) {
@@ -38,8 +38,10 @@ export async function beginDownload(event: IpcMainEvent, info: BeginDownloadInfo
 	try {
 		for (let i = 0; i < mp4FileNameArray.length; i++) {
 			const singleMp4FullPath = dir + '/' + mp4FileNameArray[i]
-			const fullDownloadUrl = downloadInfo.tsFileUrl + mp4FileNameArray[i]
+			const fullDownloadUrl = downloadInfo.tsFileUrl + tsFileArray[i]
+
 			function errorCallback(err) {
+				console.log('err')
 				focusedWindow.webContents.send('error', err)
 			}
 			await downloadService.downloadTsFile(singleMp4FullPath, fullDownloadUrl, _IV, keyURIContent, errorCallback)
@@ -82,4 +84,14 @@ export async function setupRootFolder() {
 export function reloadForFetch() {
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	focusedWindow.reload()
+}
+
+export function minimizeWindow() {
+	const focusedWindow = BrowserWindow.getFocusedWindow()
+	focusedWindow.minimize()
+}
+
+export function closeWindow() {
+	const focusedWindow = BrowserWindow.getFocusedWindow()
+	focusedWindow.close()
 }

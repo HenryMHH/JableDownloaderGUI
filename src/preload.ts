@@ -12,4 +12,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
 	beginDownload: (link: string) => ipcRenderer.send('beginDownload', link),
 	setupRootFolder: () => ipcRenderer.send('setupRootFolder'),
 	returnRootPath: (cb) => ipcRenderer.on('returnRootPath', cb),
+	minimizeWindow: () => ipcRenderer.send('minimizeWindow'),
+	closeWindow: () => ipcRenderer.send('closeWindow'),
 })

@@ -12,6 +12,8 @@ export declare global {
 			beginDownload: ({ link, rootPath }: { link: string; rootPath: string }) => void
 			setupRootFolder: () => void
 			returnRootPath: (cb: Function) => void
+			minimizeWindow: () => void
+			closeWindow: () => void
 		}
 	}
 }
