@@ -8,7 +8,7 @@ export declare global {
 			reloadWindow: () => void
 			getVideoListByActorLink: (props: { url: string; page: number }) => void
 			actorVideoListSetter: (cb: Function) => void
-			initDownload: ({ link, rootPath }: { link: string; rootPath: string }) => void
+			beginDownload: ({ link, rootPath }: { link: string; rootPath: string }) => void
 			setupRootFolder: () => void
 			returnRootPath: (cb: Function) => void
 		}

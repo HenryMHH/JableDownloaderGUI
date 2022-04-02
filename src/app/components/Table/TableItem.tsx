@@ -27,7 +27,7 @@ export default function TableItem({ item }: { item: ActorVideoItem }) {
 		const rootPath = localStorage.getItem('rootPath')
 
 		if (rootPath) {
-			window.electronAPI.initDownload({ link, rootPath })
+			window.electronAPI.beginDownload({ link, rootPath })
 		} else {
 			alert('請指定下載根目錄!')
 		}
