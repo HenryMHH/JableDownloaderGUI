@@ -52,7 +52,7 @@ export default function TableItem({ item, index }: { item: ActorVideoItem; index
 	const { fakeData, fakeArticle } = useGetSaftyModeData()
 	const dispatch = useDispatch()
 	const { currentDownloadName } = useSelector((state) => state['downloadState'])
-	const downloadHistory = JSON.parse(localStorage.getItem('downloadHistory')) as Array<string>
+	const downloadHistory = localStorage.getItem('downloadHistory') ? (JSON.parse(localStorage.getItem('downloadHistory')) as Array<string>) : []
 	const cancelRef = useRef()
 	function handleDownload(link: string) {
 		const rootPath = localStorage.getItem('rootPath')
