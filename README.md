@@ -1,6 +1,6 @@
 # Jable Downloader
 
-靈感來源: https://github.com/hcjohn463/JableTVDownload。 <br>
+靈感來源: https://github.com/hcjohn463/JableTVDownload <br>
 覺得這麼有趣的功能沒有加上 GUI 實在有點可惜。
 
 ## 使用工具
