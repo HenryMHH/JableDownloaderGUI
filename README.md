@@ -33,6 +33,8 @@
 
 如果覺得有趣或用起來還算滿意的話，請大方贈送你/妳們的星星。
 
+合併後的影片拖拉會有卡頓的感覺的話，請參考[此專案](https://github.com/hcjohn463/JableTVDownload)提供的解法。
+
 - 個人 Email: minghang.h@gmail.com
 - Facebook: https://www.facebook.com/mingang.he/
 - Github: https://github.com/HenryMHH
