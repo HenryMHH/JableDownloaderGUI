@@ -159,6 +159,13 @@ export class DownloadService {
 		}
 	}
 
+	/**
+	 * aes-cbc-128解密，key 跟 IV 都是16 bytes Buffer
+	 * @param data
+	 * @param IV
+	 * @param key
+	 * @returns
+	 */
 	decrypt(data: Uint8Array, IV: string, key: Uint8Array) {
 		const decipher = crypto.createDecipheriv('aes-128-cbc', key, Buffer.from(IV))
 		let decrypted = decipher.update(data)

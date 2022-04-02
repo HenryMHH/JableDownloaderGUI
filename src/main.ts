@@ -13,9 +13,9 @@ function createWindow() {
 			preload: path.join(__dirname, 'preload.js'),
 		},
 		width: 800,
-		autoHideMenuBar: true,
+		// autoHideMenuBar: true,
 		resizable: false,
-		titleBarStyle: 'hidden',
+		// titleBarStyle: 'hidden',
 	})
 
 	mainWindow.loadFile(path.join(__dirname, '../index.html'))

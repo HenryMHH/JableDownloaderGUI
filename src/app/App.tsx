@@ -8,6 +8,7 @@ import Opening from './components/Opening'
 import Table from './components/Table/Table'
 import Header from './components/Header'
 import useToastHook from './hooks/useToastHook'
+import { PaginatorAction } from '../types/types'
 
 function handleInitInfo() {
 	window.electronAPI.getActorListByPage(1)
@@ -17,8 +18,6 @@ export interface Page {
 	currentPage: number
 	maxPage: number
 }
-
-export type Action = 'plus' | 'minus' | 'toFirst' | 'toLast'
 
 export default function App() {
 	const [actorsPage, setActorsPage] = useState<Page>({ maxPage: 0, currentPage: 1 })
@@ -53,6 +52,9 @@ export default function App() {
 				}
 			})
 		})
+	}, [])
+
+	useEffect(() => {
 		handleInitInfo()
 	}, [])
 
@@ -62,7 +64,7 @@ export default function App() {
 		window.electronAPI.getVideoListByActorLink({ url: url, page: 1 })
 	}
 
-	function handleChangePage(action: Action) {
+	function handleChangePage(action: PaginatorAction) {
 		let currentPage = videosPage.currentPage || actorsPage.currentPage
 		let maxPage = videosPage.maxPage || actorsPage.maxPage
 		let cb = videosPage.maxPage ? setVideosPage : setActorsPage

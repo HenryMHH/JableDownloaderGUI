@@ -36,7 +36,7 @@ const StyledVideoListTable = styled(Box)`
 const TitleBar = styled(Box)`
 	display: flex;
 	text-align: center;
-	backgroud: white;
+	background: white;
 	padding: 0 1.5rem;
 `
 

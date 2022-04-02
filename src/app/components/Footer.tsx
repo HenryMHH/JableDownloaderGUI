@@ -1,9 +1,8 @@
-import { Box, Input } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import React, { useEffect, useRef } from 'react'
-import { useState } from 'react'
 import styled from '@emotion/styled'
-import { ListItem } from '../../service/getListService'
-import { Action, Page } from '../App'
+import { Page } from '../App'
+import { PaginatorAction } from '../../types/types'
 
 const PaginatorBox = styled(Box)`
 	display: flex;
@@ -29,7 +28,7 @@ const PageButton = styled(Box)`
 interface FooterProps {
 	videosPage: Page
 	actorsPage: Page
-	handleChangePage: (action: Action) => void
+	handleChangePage: (action: PaginatorAction) => void
 }
 
 export default function Footer({ videosPage, actorsPage, handleChangePage }: FooterProps) {

@@ -30,3 +30,5 @@ export interface BeginDownloadInfo {
 	link: string
 	rootPath: string
 }
+
+export type PaginatorAction = 'plus' | 'minus' | 'toFirst' | 'toLast'
