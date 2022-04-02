@@ -4,7 +4,6 @@ import fs from 'fs'
 import { GetListService, InitInfo } from './service/getListService'
 import { DownloadService } from './service/downloadService'
 import Axios from './utils/Axios'
-import { typeOf } from '../dist/renderer'
 
 const isDev: boolean = process.env.NODE_ENV === 'development' ? true : false
 
@@ -55,7 +54,6 @@ async function initDownload(event: IpcMainEvent, { link, rootPath }: { link: str
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir)
 			focusedWindow.webContents.send('success', `${mp4Name} 下載初始化!`)
-			return
 		} else {
 			focusedWindow.webContents.send('error', '資料夾已存在，下載程序中斷')
 			return
