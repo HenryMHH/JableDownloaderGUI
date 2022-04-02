@@ -55,9 +55,8 @@ export class DownloadService {
 			this._URI = _URI
 			this._IV = _IV
 			let fullURI = m3u8_url.split('/').slice(0, -1).join('/') + '/' + _URI
-			const _URIContent = await this.Axios.get(fullURI)
+			const _URIContent = await this.Axios.get(fullURI, { responseType: 'arraybuffer' })
 			downloadInfo.URIContent = _URIContent.data
-
 			downloadInfo._IV = _IV
 			tsFileArray = __m3u8_content__.data
 				.split(',')
@@ -74,19 +73,10 @@ export class DownloadService {
 		const result = await this.Axios.get(url)
 	}
 
-	decrypt(data, IV, key) {
-		// let j = CryptoJS.enc.Utf8.parse(IV)
-		// let t = key.toString()
-		// let decrypt = AES.decrypt(data, t, { iv: j, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.NoPadding })
-		// let c = decrypt.toString()
-		// return c
-		let _IV = Buffer.from(IV, 'utf8')
-		let _key = Buffer.from(key, 'utf8')
-		let plainbytes = Buffer.from(data, 'utf8')
-		let cipher = crypto.createDecipheriv('aes-128-cbc', _key, _IV)
-		let decrypt = cipher.update(plainbytes)
-		decrypt = Buffer.concat([decrypt, cipher.final()])
-
-		return decrypt
+	decrypt(data: Uint8Array, IV, key: Uint8Array) {
+		const decipher = crypto.createDecipheriv('aes-128-cbc', key, Buffer.from(IV))
+		let decrypted = decipher.update(data)
+		decrypted = Buffer.concat([decrypted, decipher.final()])
+		return decrypted
 	}
 }

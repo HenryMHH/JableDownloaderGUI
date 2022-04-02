@@ -2,6 +2,7 @@ export declare global {
 	interface Window {
 		electronAPI: {
 			errorMessenger: (cb: Function) => void
+			successMessenger: (cb: Function) => void
 			getActorListByPage: (page: number) => void
 			infoSetter: (cb: Function) => void
 			reloadWindow: () => void

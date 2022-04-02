@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import React, { useRef } from 'react'
 import { ActorVideoItem } from '../../../service/getListService'
 
-const TableItem = styled(Box)`
+const StyledTableItem = styled(Box)`
 	overflow: hidden;
 	border-radius: 5px;
 	display: flex;
@@ -20,7 +20,7 @@ const Item = styled(Box)`
 	display: flex;
 `
 
-export default function DownloadItem({ item }: { item: ActorVideoItem }) {
+export default function TableItem({ item }: { item: ActorVideoItem }) {
 	const { isOpen, onClose, onOpen } = useDisclosure()
 	const cancelRef = useRef()
 	function handleDownload(link: string) {
@@ -33,7 +33,7 @@ export default function DownloadItem({ item }: { item: ActorVideoItem }) {
 		}
 	}
 	return (
-		<TableItem onClick={() => onOpen()}>
+		<StyledTableItem onClick={() => onOpen()}>
 			<Item>
 				<Box w="10vw">{item.indexNO}</Box>
 				<Box w="60vw">{item.title}</Box>
@@ -60,6 +60,6 @@ export default function DownloadItem({ item }: { item: ActorVideoItem }) {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
-		</TableItem>
+		</StyledTableItem>
 	)
 }

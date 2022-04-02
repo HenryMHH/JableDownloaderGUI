@@ -4,6 +4,7 @@ import fs from 'fs'
 import { GetListService, InitInfo } from './service/getListService'
 import { DownloadService } from './service/downloadService'
 import Axios from './utils/Axios'
+import { typeOf } from '../dist/renderer'
 
 const isDev: boolean = process.env.NODE_ENV === 'development' ? true : false
 
@@ -48,29 +49,53 @@ async function initDownload(event: IpcMainEvent, { link, rootPath }: { link: str
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	const downloadService = new DownloadService()
 	const downloadInfo = await downloadService.initDownload(link)
-	focusedWindow.webContents.send('error', downloadInfo)
 	if (downloadInfo.tsFileArray.length > 0) {
 		const dir = rootPath + '/' + downloadInfo.folderName
+		const mp4Name = downloadInfo.folderName + '.mp4'
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir)
+			focusedWindow.webContents.send('success', `${mp4Name} 下載初始化!`)
+			return
 		} else {
-			fs.rmdirSync(dir)
-			fs.mkdirSync(dir)
-			// focusedWindow.webContents.send('error', '資料夾已存在，下載程序中斷')
-			// return
+			focusedWindow.webContents.send('error', '資料夾已存在，下載程序中斷')
+			return
 		}
-		for (let i = 0; i < 2; i++) {
-			const result = await Axios.get(downloadInfo.tsFileUrl + downloadInfo.tsFileArray[i])
-			// downloadService.decrypt(result.data, downloadInfo._IV, downloadInfo.URIContent)
-			fs.writeFile(dir + '/' + downloadInfo.tsFileArray[i].replace('ts', 'mp4'), downloadService.decrypt(result.data, downloadInfo._IV, downloadInfo.URIContent), function (err) {
-				if (err) {
+		for (let i = 0; i < downloadInfo.tsFileArray.length; i++) {
+			let singleMp4FullPath = dir + '/' + downloadInfo.tsFileArray[i].replace('ts', 'mp4')
+			if (!fs.existsSync(singleMp4FullPath)) {
+				try {
+					const result = await Axios.get(downloadInfo.tsFileUrl + downloadInfo.tsFileArray[i], { responseType: 'arraybuffer' })
+					fs.writeFile(singleMp4FullPath, downloadService.decrypt(result.data, downloadInfo._IV, downloadInfo.URIContent), function (err) {
+						if (err) {
+							focusedWindow.webContents.send('error', err)
+							return
+						}
+					})
+				} catch (err) {
 					focusedWindow.webContents.send('error', err)
-					return
+				}
+			}
+		}
+		let writer = fs.createWriteStream(dir + '/' + mp4Name)
+		for (let i = 0; i < downloadInfo.tsFileArray.length; i++) {
+			let fullPath = dir + '/' + downloadInfo.tsFileArray[i].replace('ts', 'mp4')
+			if (fs.existsSync(fullPath)) {
+				let a = fs.readFileSync(fullPath)
+				writer.write(a)
+			} else {
+				console.log(fullPath)
+			}
+		}
+		writer.end()
+		for (let i = 0; i < downloadInfo.tsFileArray.length; i++) {
+			let fullPath = dir + '/' + downloadInfo.tsFileArray[i].replace('ts', 'mp4')
+			fs.unlink(fullPath, (errMsg) => {
+				if (errMsg) {
+					console.log(errMsg)
 				}
 			})
-
-			// fs.writeFileSync(dir + '/' + downloadInfo.tsFileArray[i], downloadService.decrypt(result.data, downloadInfo._IV, downloadInfo.URIContent), 'binary')
 		}
+		focusedWindow.webContents.send('success', `${mp4Name} 下載完成!`)
 	} else {
 		focusedWindow.webContents.send('error', '未獲取下載連結')
 	}

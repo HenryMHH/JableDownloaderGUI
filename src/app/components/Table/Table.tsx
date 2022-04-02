@@ -1,8 +1,8 @@
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Image, useDisclosure } from '@chakra-ui/react'
+import { Box, Image } from '@chakra-ui/react'
 import styled from '@emotion/styled'
-import React, { useRef } from 'react'
+import React from 'react'
 import { ActorVideoItem, ListItem } from '../../../service/getListService'
-import DownloadItem from './DownloadItem'
+import TableItem from './TableItem'
 
 const StyledTable = styled(Box)`
 	height: 80vh;
@@ -14,7 +14,7 @@ const StyledTable = styled(Box)`
 	grid-row-gap: 1em;
 `
 
-const TableItem = styled(Box)`
+const StyledTableItem = styled(Box)`
 	overflow: hidden;
 	border-radius: 5px;
 	display: flex;
@@ -53,13 +53,13 @@ export default function Table({ actorList = [], videoList = [], initActorVideoLi
 				<StyledTable>
 					{actorList.map((item) => {
 						return (
-							<TableItem key={item.href} onClick={() => initActorVideoList(item.href)}>
+							<StyledTableItem key={item.href} onClick={() => initActorVideoList(item.href)}>
 								<Image h="70px" src={item.imgSrc} />
 								<Box ml="5px">
 									<Box>{item.name} </Box>
 									<Box>{item.number}</Box>
 								</Box>
-							</TableItem>
+							</StyledTableItem>
 						)
 					})}
 				</StyledTable>
@@ -76,7 +76,7 @@ export default function Table({ actorList = [], videoList = [], initActorVideoLi
 					</TitleBar>
 					<StyledVideoListTable>
 						{videoList.map((item, index) => (
-							<DownloadItem item={item} key={item.title + `${index}`} />
+							<TableItem item={item} key={item.title + `${index}`} />
 						))}
 					</StyledVideoListTable>
 				</Box>

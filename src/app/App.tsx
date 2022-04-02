@@ -7,6 +7,7 @@ import TitleBar from './components/TitleBar'
 import Opening from './components/Opening'
 import Table from './components/Table/Table'
 import Header from './components/Header'
+import useToastHook from '../hooks/useToastHook'
 
 function handleInitInfo() {
 	window.electronAPI.getActorListByPage(1)
@@ -24,18 +25,22 @@ export default function App() {
 	const [videosPage, setVideosPage] = useState<Page>({ maxPage: 0, currentPage: 0 })
 	const [actorList, setActorList] = useState<ListItem[]>([])
 	const [videoList, setVideoList] = useState<ActorVideoItem[]>([])
+	const { setTip } = useToastHook()
 	function resetAndBack() {
 		setVideosPage({ maxPage: 0, currentPage: 0 })
 		setVideoList([])
 	}
 
 	useEffect(() => {
+		console.log(13)
 		window.electronAPI.errorMessenger((e, message: string) => {
-			console.log(message)
-			return
-			alert(message)
+			setTip({ status: 'error', msg: message })
+			// console.log(message)
 		})
-
+		window.electronAPI.successMessenger((e, message: string) => {
+			setTip({ status: 'success', msg: message })
+			// console.log(message)
+		})
 		window.electronAPI.actorVideoListSetter((e: IpcRendererEvent, value: ActorVideoInfo) => {
 			setVideoList(value.videoList)
 			setVideosPage((pre) => (pre = { ...pre, maxPage: value.maxListPage }))
