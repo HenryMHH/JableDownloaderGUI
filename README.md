@@ -1,5 +1,8 @@
 # Jable Downloader
 
+靈感來源: https://github.com/hcjohn463/JableTVDownload。 <br>
+覺得這麼有趣的功能沒有加上 GUI 實在有點可惜。
+
 ## 使用工具
 
 1. App 框架: Electron
@@ -22,7 +25,9 @@
 
 ---
 
-此 APP 僅為個人 SIDE PROJECT 練習之用，目前僅有提供 WINDOW x64 線上下載。
+此 APP 僅為個人 SIDE PROJECT 練習之用，目前僅有提供 WINDOW x64 線上下載，下載後解壓縮即可使用。
+
+下載連結: https://drive.google.com/file/d/1TqjNnYieXphk5gcfamVrn012LmdtLTI-/view?usp=sharing
 
 不確定這個 APP 能夠存活或使用多久，如果有什麼建議，或是有 BUG，請開 Issue 或 PR。
 
