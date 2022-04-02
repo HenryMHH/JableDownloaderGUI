@@ -3,6 +3,7 @@ export declare global {
 		electronAPI: {
 			errorMessenger: (cb: Function) => void
 			successMessenger: (cb: Function) => void
+			getPercentage: (cb: Function) => void
 			getActorListByPage: (page: number) => void
 			infoSetter: (cb: Function) => void
 			reloadWindow: () => void

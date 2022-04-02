@@ -1,7 +1,9 @@
-import { Box, Image } from '@chakra-ui/react'
+import { Box, Icon, Image } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { ActorVideoItem, ListItem } from '../../../service/getListService'
+import useGetSaftyModeData from '../../hooks/useGetSaftyModeData'
 import TableItem from './TableItem'
 
 const StyledTable = styled(Box)`
@@ -36,7 +38,6 @@ const StyledVideoListTable = styled(Box)`
 const TitleBar = styled(Box)`
 	display: flex;
 	text-align: center;
-	background: white;
 	padding: 0 1.5rem;
 `
 
@@ -47,17 +48,19 @@ interface TableData {
 }
 
 export default function Table({ actorList = [], videoList = [], initActorVideoList }: TableData) {
+	const isSafetyMode = useSelector((state) => state['safetyModeState'])
+	const { fakeData } = useGetSaftyModeData()
 	return (
 		<>
 			{actorList.length > 0 && videoList.length === 0 ? (
 				<StyledTable>
-					{actorList.map((item) => {
+					{actorList.map((item, i) => {
 						return (
 							<StyledTableItem key={item.href} onClick={() => initActorVideoList(item.href)}>
-								<Image h="70px" src={item.imgSrc} />
+								{isSafetyMode ? <Icon w="50px" height="50px" as={fakeData[i].icon} /> : <Image h="70px" src={item.imgSrc} />}
 								<Box ml="5px">
-									<Box>{item.name} </Box>
-									<Box>{item.number}</Box>
+									<Box>{isSafetyMode ? fakeData[i].title : item.name}</Box>
+									<Box>{isSafetyMode ? `學習時數:${Math.floor(Math.random() * 100)}小時` : item.number}</Box>
 								</Box>
 							</StyledTableItem>
 						)
@@ -68,15 +71,15 @@ export default function Table({ actorList = [], videoList = [], initActorVideoLi
 			{videoList.length > 0 ? (
 				<Box>
 					<TitleBar>
-						<Box w="10vw">番號</Box>
-						<Box w="60vw">片名</Box>
+						<Box w="10vw">{isSafetyMode ? '項次' : '番號'}</Box>
+						<Box w="60vw">{isSafetyMode ? '文章名' : '片名'}</Box>
 						<Box w="10vw">長度</Box>
 						<Box w="10vw">觀看數</Box>
 						<Box w="10vw">收藏數</Box>
 					</TitleBar>
 					<StyledVideoListTable>
 						{videoList.map((item, index) => (
-							<TableItem item={item} key={item.title + `${index}`} />
+							<TableItem item={item} index={index} key={item.title + `${index}`} />
 						))}
 					</StyledVideoListTable>
 				</Box>

@@ -30,9 +30,11 @@
 		"@chakra-ui/react": "^1.8.3",
 		"@emotion/react": "^11",
 		"@emotion/styled": "^11",
+		"@reduxjs/toolkit": "^1.8.1",
 		"@types/crypto-js": "^4.1.1",
 		"@types/react": "^17.0.39",
 		"@types/react-dom": "^17.0.11",
+		"@types/react-redux": "^7.1.23",
 		"axios": "^0.25.0",
 		"cheerio": "^1.0.0-rc.10",
 		"concurrently": "^7.0.0",
@@ -42,6 +44,8 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-icons": "^4.3.1",
+		"react-redux": "^7.2.8",
+		"redux": "^4.1.2",
 		"ts-loader": "^9.2.6"
 	},
 	"config": {

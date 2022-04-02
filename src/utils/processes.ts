@@ -43,6 +43,7 @@ export async function beginDownload(event: IpcMainEvent, info: BeginDownloadInfo
 				focusedWindow.webContents.send('error', err)
 			}
 			await downloadService.downloadTsFile(singleMp4FullPath, fullDownloadUrl, _IV, keyURIContent, errorCallback)
+			focusedWindow.webContents.send('percentage', `${i} / ${mp4FileNameArray.length}`)
 		}
 		downloadService.combineTsFile(dir, mp4FullPath, mp4FileNameArray)
 		downloadService.deleteTsFile(dir, mp4FileNameArray)

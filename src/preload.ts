@@ -3,6 +3,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 contextBridge.exposeInMainWorld('electronAPI', {
 	errorMessenger: (cb) => ipcRenderer.on('error', cb),
 	successMessenger: (cb) => ipcRenderer.on('success', cb),
+	getPercentage: (cb) => ipcRenderer.on('percentage', cb),
 	getActorListByPage: (page: number) => ipcRenderer.send('getActorListByPage', page),
 	infoSetter: (cb) => ipcRenderer.on('returnInfo', cb),
 	reloadWindow: () => ipcRenderer.send('reloadWindow'),

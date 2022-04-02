@@ -1,10 +1,27 @@
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Image, useDisclosure } from '@chakra-ui/react'
+import {
+	AlertDialog,
+	AlertDialogBody,
+	AlertDialogCloseButton,
+	AlertDialogContent,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogOverlay,
+	Box,
+	Button,
+	Icon,
+	Image,
+	useDisclosure,
+} from '@chakra-ui/react'
 import styled from '@emotion/styled'
 import React, { useRef } from 'react'
+import { AiFillCheckCircle } from 'react-icons/ai'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateDownloadState } from '../../../reducers/downloadStateSlice'
 import { ActorVideoItem } from '../../../service/getListService'
+import useGetSaftyModeData from '../../hooks/useGetSaftyModeData'
 
 const StyledTableItem = styled(Box)`
-	overflow: hidden;
+	// overflow: hidden;
 	border-radius: 5px;
 	display: flex;
 	align-items: center;
@@ -18,16 +35,44 @@ const StyledTableItem = styled(Box)`
 const Item = styled(Box)`
 	margin-left: 5px;
 	display: flex;
+	position: relative;
+	align-items: center;
 `
 
-export default function TableItem({ item }: { item: ActorVideoItem }) {
+const IconBox = styled(Box)`
+	position: absolute;
+	left: -1rem;
+	z-index: 500;
+	color: ;
+`
+
+export default function TableItem({ item, index }: { item: ActorVideoItem; index: number }) {
 	const { isOpen, onClose, onOpen } = useDisclosure()
+	const isSafetyMode = useSelector((state) => state['safetyModeState'])
+	const { fakeData, fakeArticle } = useGetSaftyModeData()
+	const dispatch = useDispatch()
+	const { currentDownloadName } = useSelector((state) => state['downloadState'])
+	const downloadHistory = JSON.parse(localStorage.getItem('downloadHistory')) as Array<string>
 	const cancelRef = useRef()
 	function handleDownload(link: string) {
 		const rootPath = localStorage.getItem('rootPath')
-
 		if (rootPath) {
-			window.electronAPI.beginDownload({ link, rootPath })
+			if (downloadHistory) {
+				if (downloadHistory.includes(item.indexNO)) {
+					const confirmResult = confirm('本片曾經下載過，確定要再次下載嗎?')
+					if (confirmResult) {
+						dispatch(updateDownloadState({ currentDownloadName: item.indexNO }))
+						window.electronAPI.beginDownload({ link, rootPath })
+					}
+				} else {
+					dispatch(updateDownloadState({ currentDownloadName: item.indexNO }))
+					window.electronAPI.beginDownload({ link, rootPath })
+					localStorage.setItem('downloadHistory', JSON.stringify([...downloadHistory, item.indexNO]))
+				}
+			} else {
+				window.electronAPI.beginDownload({ link, rootPath })
+				localStorage.setItem('downloadHistory', JSON.stringify([item.indexNO]))
+			}
 		} else {
 			alert('請指定下載根目錄!')
 		}
@@ -35,8 +80,11 @@ export default function TableItem({ item }: { item: ActorVideoItem }) {
 	return (
 		<StyledTableItem onClick={() => onOpen()}>
 			<Item>
-				<Box w="10vw">{item.indexNO}</Box>
-				<Box w="60vw">{item.title}</Box>
+				<IconBox>{downloadHistory.includes(item.indexNO) && <AiFillCheckCircle />}</IconBox>
+				<Box w="10vw" textAlign="center">
+					{isSafetyMode ? index : item.indexNO}
+				</Box>
+				<Box w="60vw">{isSafetyMode ? fakeArticle[index] : item.title}</Box>
 				<Box w="10vw">{item.time}</Box>
 				<Box w="10vw">{item.views}</Box>
 				<Box w="10vw">{item.favorite}</Box>
@@ -44,18 +92,26 @@ export default function TableItem({ item }: { item: ActorVideoItem }) {
 			<AlertDialog motionPreset="slideInBottom" leastDestructiveRef={cancelRef} onClose={onClose} isOpen={isOpen} isCentered>
 				<AlertDialogOverlay />
 				<AlertDialogContent>
-					<AlertDialogHeader>{item.indexNO}</AlertDialogHeader>
+					<AlertDialogHeader>{isSafetyMode ? `項次: ${index}` : `$番號: ${item.indexNO}`}</AlertDialogHeader>
 					<AlertDialogCloseButton />
 					<AlertDialogBody>
-						<Image src={item.imgSrc} w="80%" mx="auto" />
-						{item.title}
+						{isSafetyMode ? <Icon display="block" w="40%" h="40%" mx="auto" as={fakeData[0].icon} /> : <Image src={item.imgSrc} w="80%" mx="auto" />}
+						{isSafetyMode ? fakeArticle[index] : item.title}
 					</AlertDialogBody>
 					<AlertDialogFooter>
 						<Button ref={cancelRef} onClick={onClose}>
 							取消
 						</Button>
-						<Button onClick={() => handleDownload(item.link)} colorScheme="green" ml={3}>
-							下載
+						<Button disabled={currentDownloadName} onClick={() => handleDownload(item.link)} colorScheme="green" ml={3}>
+							{!isSafetyMode ? (
+								<>
+									{currentDownloadName === item.indexNO ? '當前下載中' : ''}
+									{currentDownloadName && currentDownloadName !== item.indexNO ? '其他檔案下載中，請稍後' : ''}
+									{!currentDownloadName ? '下載' : ''}
+								</>
+							) : (
+								<>前往閱讀文章</>
+							)}
 						</Button>
 					</AlertDialogFooter>
 				</AlertDialogContent>

@@ -1,7 +1,7 @@
 import { Box, Square } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 import React from 'react'
-import { AiOutlineReload } from 'react-icons/ai'
+import { useSelector } from 'react-redux'
 
 const StyledTitleBar = styled(Box)`
 	-webkit-app-region: drag;
@@ -15,9 +15,10 @@ const StyledTitleBar = styled(Box)`
 `
 
 export default function TitleBar() {
+	const isSafetyMode = useSelector((state) => state['safetyModeState'])
 	return (
 		<StyledTitleBar>
-			<Box>Jable Downloader</Box>
+			<Box>{isSafetyMode ? '前端學習軟體' : 'Jable Downloader'}</Box>
 		</StyledTitleBar>
 	)
 }

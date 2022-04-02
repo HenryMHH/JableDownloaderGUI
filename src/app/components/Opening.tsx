@@ -55,6 +55,7 @@ const StyledBg = styled(Box)`
 	align-items: center;
 	display: flex;
 	animation: ${FadeOut} 1s ease 4.5s forwards;
+	z-index: 9998;
 `
 
 const ContentBox = styled(Box)`

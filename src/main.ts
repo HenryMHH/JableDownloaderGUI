@@ -12,7 +12,7 @@ function createWindow() {
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
 		},
-		width: 800,
+		width: 900,
 		// autoHideMenuBar: true,
 		resizable: false,
 		// titleBarStyle: 'hidden',
