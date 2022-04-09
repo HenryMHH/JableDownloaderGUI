@@ -8,7 +8,7 @@
 ### 4/9
 
 1. 優化 UI 及 下載百分比顯示
-2. 強化安全模式
+2. 強化安全模式 (縮小視窗自動切換)
 3. 增加下載續傳功能
 4. 增加取消下載功能
 
@@ -36,7 +36,13 @@
 
 此 APP 僅為個人 SIDE PROJECT 練習之用，目前僅有提供 WINDOW x64 線上下載，下載後解壓縮即可使用。
 
-下載連結: https://drive.google.com/file/d/1TqjNnYieXphk5gcfamVrn012LmdtLTI-/view?usp=sharing
+下載連結: <br>
+4/9 latest version
+<br>
+https://drive.google.com/file/d/1IUUWIszCQBk8udwJPkQKheEvOhytIHyF/view?usp=sharing
+<br>
+4/2
+https://drive.google.com/file/d/1TqjNnYieXphk5gcfamVrn012LmdtLTI-/view?usp=sharing
 
 不確定這個 APP 能夠存活或使用多久，如果有什麼建議，或是有 BUG，請開 Issue 或 PR。
 
