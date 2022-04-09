@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
 import fs from 'fs'
-import { beginDownload, closeWindow, getActorListByPage, getVideoListByActorLink, minimizeWindow, reloadForFetch, setupRootFolder } from './utils/processes'
+import { beginDownload, closeWindow, getActorListByPage, getVideoListByActorLink, minimizeWindow, openChrome, reloadForFetch, setupRootFolder, stopCurrentDownload } from './utils/processes'
 
 const isDev: boolean = process.env.NODE_ENV === 'development' ? true : false
 
@@ -39,6 +39,8 @@ app.on('ready', () => {
 	ipcMain.on('setupRootFolder', setupRootFolder)
 	ipcMain.on('minimizeWindow', minimizeWindow)
 	ipcMain.on('closeWindow', closeWindow)
+	ipcMain.on('stopCurrentDownload', stopCurrentDownload)
+	ipcMain.on('openChrome', openChrome)
 	createWindow()
 
 	app.on('activate', function () {

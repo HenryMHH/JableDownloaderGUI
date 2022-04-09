@@ -37,12 +37,16 @@ export default function App() {
 		setVideoList([])
 	}
 
+	function resetDownloadState() {
+		dispatch(updateDownloadState({ currentDownloadName: '', percentage: '' }))
+	}
+
 	// 註冊所有的electronApi事件
 	useEffect(() => {
 		window.electronAPI.errorMessenger((e, message: string) => {
 			setTip({ status: 'error', msg: message })
-			if (message.includes('程序中斷')) {
-				dispatch(updateDownloadState({ currentDownloadName: '', percentage: '' }))
+			if (message.includes('程序中斷') || message.includes('停止下載')) {
+				resetDownloadState()
 			}
 		})
 		window.electronAPI.successMessenger((e, message: string) => {
@@ -50,7 +54,7 @@ export default function App() {
 
 			// 下載完成以後清除當前下載檔案名稱
 			if (message.includes('下載完成')) {
-				dispatch(updateDownloadState({ currentDownloadName: '', percentage: '' }))
+				resetDownloadState()
 			}
 		})
 		window.electronAPI.getPercentage((e, percentage: number) => {

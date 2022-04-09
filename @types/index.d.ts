@@ -14,6 +14,8 @@ export declare global {
 			returnRootPath: (cb: Function) => void
 			minimizeWindow: () => void
 			closeWindow: () => void
+			stopCurrentDownload: () => void
+			openChrome: (url: string) => void
 		}
 	}
 }

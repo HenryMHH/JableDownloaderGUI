@@ -1,6 +1,7 @@
 import { Box, Square } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { AiOutlineReload, AiOutlineFolderOpen } from 'react-icons/ai'
+import SideDrawer from './SideDrawer'
 import { useSelector } from 'react-redux'
 
 export default function Header({ resetAndBack, videoList }) {
@@ -44,6 +45,7 @@ export default function Header({ resetAndBack, videoList }) {
 						<AiOutlineReload />
 					</Square>
 				</Box>
+				<SideDrawer />
 			</Box>
 		</Box>
 	)

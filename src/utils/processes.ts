@@ -3,6 +3,9 @@ import { DownloadService } from '../service/downloadService'
 import { BeginDownloadInfo } from '../types/types'
 import fs from 'fs'
 import { GetListService, InitInfo } from '../service/getListService'
+import open from 'open'
+
+let stopDownload = false
 
 /**
  *
@@ -11,6 +14,8 @@ import { GetListService, InitInfo } from '../service/getListService'
  * @returns void
  */
 export async function beginDownload(event: IpcMainEvent, info: BeginDownloadInfo): Promise<void> {
+	stopDownload = false
+
 	const { link, rootPath } = info
 	const downloadService = new DownloadService()
 	const focusedWindow = BrowserWindow.getFocusedWindow()
@@ -29,14 +34,16 @@ export async function beginDownload(event: IpcMainEvent, info: BeginDownloadInfo
 
 	if (!fs.existsSync(dir)) {
 		fs.mkdirSync(dir)
-		focusedWindow.webContents.send('success', `${mp4Name} 下載初始化!`)
+		focusedWindow.webContents.send('success', `建立資料夾-${mp4Name}，下載初始化!`)
 	} else {
-		focusedWindow.webContents.send('error', '資料夾已存在，下載程序中斷')
-		return
+		focusedWindow.webContents.send('success', `資料夾已存在，繼續未完成下載!`)
 	}
 
 	try {
 		for (let i = 0; i < mp4FileNameArray.length; i++) {
+			if (stopDownload) {
+				throw '停止下載!'
+			}
 			const singleMp4FullPath = dir + '/' + mp4FileNameArray[i]
 			const fullDownloadUrl = downloadInfo.tsFileUrl + tsFileArray[i]
 
@@ -45,7 +52,7 @@ export async function beginDownload(event: IpcMainEvent, info: BeginDownloadInfo
 				focusedWindow.webContents.send('error', err)
 			}
 			await downloadService.downloadTsFile(singleMp4FullPath, fullDownloadUrl, _IV, keyURIContent, errorCallback)
-			focusedWindow.webContents.send('percentage', `${i} / ${mp4FileNameArray.length}`)
+			focusedWindow.webContents.send('percentage', downloadService.formatPercentage(i, mp4FileNameArray.length))
 		}
 		downloadService.combineTsFile(dir, mp4FullPath, mp4FileNameArray)
 		downloadService.deleteTsFile(dir, mp4FileNameArray)
@@ -67,7 +74,6 @@ export async function getVideoListByActorLink(evnet: IpcMainEvent, { url, page }
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	const getListService = new GetListService()
 	const result = await getListService.getVideoListByActorLink(url, page)
-	console.log('fetchList')
 	focusedWindow.webContents.send('returnVideoList', result)
 }
 
@@ -95,4 +101,12 @@ export function minimizeWindow() {
 export function closeWindow() {
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	focusedWindow.close()
+}
+
+export function stopCurrentDownload() {
+	stopDownload = true
+}
+
+export async function openChrome(e: IpcMainEvent, url: string) {
+	await open(url, { app: { name: open.apps.chrome } })
 }

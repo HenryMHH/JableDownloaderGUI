@@ -59,7 +59,7 @@ export default function TableItem({ item, index }: { item: ActorVideoItem; index
 		if (rootPath) {
 			if (downloadHistory) {
 				if (downloadHistory.includes(item.indexNO)) {
-					const confirmResult = confirm('本片曾經下載過，確定要再次下載嗎?')
+					const confirmResult = confirm('本片曾經下載過，確定要再次下載或繼續未完成下載?')
 					if (confirmResult) {
 						dispatch(updateDownloadState({ currentDownloadName: item.indexNO }))
 						window.electronAPI.beginDownload({ link, rootPath })
@@ -92,7 +92,7 @@ export default function TableItem({ item, index }: { item: ActorVideoItem; index
 			<AlertDialog motionPreset="slideInBottom" leastDestructiveRef={cancelRef} onClose={onClose} isOpen={isOpen} isCentered>
 				<AlertDialogOverlay />
 				<AlertDialogContent>
-					<AlertDialogHeader>{isSafetyMode ? `項次: ${index}` : `$番號: ${item.indexNO}`}</AlertDialogHeader>
+					<AlertDialogHeader>{isSafetyMode ? `項次: ${index}` : `番號: ${item.indexNO}`}</AlertDialogHeader>
 					<AlertDialogCloseButton />
 					<AlertDialogBody>
 						{isSafetyMode ? <Icon display="block" w="40%" h="40%" mx="auto" as={fakeData[0].icon} /> : <Image src={item.imgSrc} w="80%" mx="auto" />}

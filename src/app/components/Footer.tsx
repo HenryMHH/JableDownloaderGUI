@@ -15,11 +15,11 @@ const PaginatorBox = styled(Box)`
 `
 
 const PageButton = styled(Button)`
-	width: 25px;
+	width: 18px;
 	height: 25px;
 	display: grid;
 	place-items: center;
-	margin: 0 5px;
+	margin: 0 3px;
 	cursor: pointer;
 	font-size: 1.3rem;
 	background: transparent;
@@ -77,7 +77,6 @@ export default function Footer({ videosPage, actorsPage, handleChangePage }: Foo
 	}
 	return (
 		<Box position="relative" pt="1rem">
-			<ColorModeSwitch />
 			<PaginatorBox>{paginator(videosPage.currentPage || actorsPage.currentPage, videosPage.maxPage || actorsPage.maxPage)}</PaginatorBox>
 			<CurrentDownload />
 			<SafetyModeSwitch />

@@ -172,4 +172,14 @@ export class DownloadService {
 		decrypted = Buffer.concat([decrypted, decipher.final()])
 		return decrypted
 	}
+	/**
+	 * 轉換當前下載數量比 為 百分比數字(string)
+	 * @param currentIndex
+	 * @param totalFileNumber
+	 * @returns
+	 */
+	formatPercentage(currentIndex: number, totalFileNumber: number): string {
+		let ratio = (currentIndex / totalFileNumber) * 100
+		return Number.parseFloat(ratio.toString()).toFixed(1)
+	}
 }
