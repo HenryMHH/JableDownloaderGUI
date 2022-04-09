@@ -3,6 +3,15 @@
 靈感來源: https://github.com/hcjohn463/JableTVDownload <br>
 覺得這麼有趣的功能沒有加上 GUI 實在有點可惜。
 
+## 更新日誌
+
+### 4/9
+
+1. 優化 UI 及 下載百分比顯示
+2. 強化安全模式
+3. 增加下載續傳功能
+4. 增加取消下載功能
+
 ## 使用工具
 
 1. App 框架: Electron
@@ -19,7 +28,7 @@
 
 ## FUTURE
 
-1. 下載功能優化
+1. ~~下載功能優化~~
 2. 排程下載功能
 3. 專案 Refactor
 
@@ -38,3 +47,5 @@
 - 個人 Email: minghang.h@gmail.com
 - Facebook: https://www.facebook.com/mingang.he/
 - Github: https://github.com/HenryMHH
+
+---
