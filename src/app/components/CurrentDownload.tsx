@@ -7,7 +7,7 @@ export default function CurrentDownload() {
 	return (
 		<>
 			{currentDownloadName && (
-				<Box position="absolute" left="7rem" top="0">
+				<Box position="absolute" left="7rem" top="1rem">
 					{currentDownloadName} : {percentage}
 				</Box>
 			)}
