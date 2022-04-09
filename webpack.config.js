@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
 	mode: process.env.NODE_ENV,
@@ -16,6 +17,11 @@ module.exports = {
 		rules: [{ test: /\.tsx?$/, loader: 'ts-loader' }],
 	},
 	target: ['electron-main', 'electron-renderer'],
+	plugins: [
+		new webpack.DefinePlugin({
+			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+		}),
+	],
 	watch: true,
 	watchOptions: {
 		poll: 200,

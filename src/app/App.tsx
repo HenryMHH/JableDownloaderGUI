@@ -121,7 +121,7 @@ export default function App() {
 	}
 	return (
 		<>
-			<Opening />
+			{process.env.NODE_ENV !== 'development' && <Opening />}
 			{isLoading && <Loading />}
 			<Box h="100vh" w="100vw" minW="600px">
 				<TitleBar />
