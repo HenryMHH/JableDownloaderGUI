@@ -21,7 +21,7 @@ export default function Header({ resetAndBack, videoList }) {
 	}, [])
 	return (
 		<Box display="flex" justifyContent="space-between" alignItems="center">
-			<Box display="flex" alignItems="center" onClick={setupRootFolder} cursor="pointer">
+			<Box display="flex" alignItems="center" onClick={setupRootFolder} cursor="pointer" minH="1.8rem">
 				{!isSafetyMode && (
 					<>
 						<Box p="0.3rem" fontSize="1.2rem">
@@ -39,7 +39,7 @@ export default function Header({ resetAndBack, videoList }) {
 					</Box>
 				)}
 				{/* 開發時才打開此功能 */}
-				<Box d="none" p="0.3rem" cursor="pointer">
+				<Box d="block" p="0.3rem" cursor="pointer">
 					<Square onClick={handleRelaunch}>
 						<AiOutlineReload />
 					</Square>

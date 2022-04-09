@@ -49,11 +49,10 @@ export default function Footer({ videosPage, actorsPage, handleChangePage }: Foo
 	}, [actorsPage.currentPage])
 
 	useEffect(() => {
-		if (videosPage.currentPage >= 1) {
-			// TODO: 這邊會有連打兩次的問題
+		if (videosPage.currentPage >= 1 && videoListUrl) {
 			window.electronAPI.getVideoListByActorLink({ url: videoListUrl, page: videosPage.currentPage })
 		}
-	}, [videosPage.currentPage])
+	}, [videosPage.currentPage, videoListUrl])
 
 	function paginator(currentPage: number, maxPage: number) {
 		return (
@@ -77,7 +76,7 @@ export default function Footer({ videosPage, actorsPage, handleChangePage }: Foo
 		)
 	}
 	return (
-		<Box position="relative">
+		<Box position="relative" pt="1rem">
 			<ColorModeSwitch />
 			<PaginatorBox>{paginator(videosPage.currentPage || actorsPage.currentPage, videosPage.maxPage || actorsPage.maxPage)}</PaginatorBox>
 			<CurrentDownload />

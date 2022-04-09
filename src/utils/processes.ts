@@ -67,6 +67,7 @@ export async function getVideoListByActorLink(evnet: IpcMainEvent, { url, page }
 	const focusedWindow = BrowserWindow.getFocusedWindow()
 	const getListService = new GetListService()
 	const result = await getListService.getVideoListByActorLink(url, page)
+	console.log('fetchList')
 	focusedWindow.webContents.send('returnVideoList', result)
 }
 

@@ -90,7 +90,6 @@ export default function App() {
 	function initActorVideoList(url: string) {
 		setVideosPage((pre) => (pre = { ...pre, currentPage: 1 }))
 		dispatch(updateDownloadState({ videoListUrl: url }))
-		window.electronAPI.getVideoListByActorLink({ url: url, page: 1 })
 		dispatch(updateLoadingState(true))
 	}
 
@@ -122,7 +121,7 @@ export default function App() {
 	}
 	return (
 		<>
-			<Opening />
+			{/* <Opening /> */}
 			{isLoading && <Loading />}
 			<Box h="100vh" w="100vw" minW="600px">
 				<TitleBar />

@@ -1,14 +1,15 @@
 import { Box, Square } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { MdMinimize, MdClose } from 'react-icons/md'
+import { updateSafeState } from '../../reducers/safeStateSlice'
 
 const StyledTitleBar = styled(Box)`
 	-webkit-app-region: drag;
 	width: 100%;
 	display: flex;
-	jusitfy-content: space-between;
+	justify-content: space-between;
 	align-items: center;
 	padding: 0.3rem 1rem;
 	background: #fe628e;
@@ -17,9 +18,12 @@ const StyledTitleBar = styled(Box)`
 
 export default function TitleBar() {
 	const isSafetyMode = useSelector((state) => state['safetyModeState'])
+	const dispatch = useDispatch()
 
 	function handleMinimize() {
-		window.electronAPI.minimizeWindow()
+		dispatch(updateSafeState(true))
+		// 稍微延遲一點再縮小，避免縮小以後，雖然切換成安全模式了，但縮圖還是顯示女優列表
+		setTimeout(() => window.electronAPI.minimizeWindow(), 50)
 	}
 
 	function handleClose() {

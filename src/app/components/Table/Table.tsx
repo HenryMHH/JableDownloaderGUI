@@ -32,7 +32,7 @@ const StyledVideoListTable = styled(Box)`
 	height: 78vh;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	padding: 0 1rem 1rem;
+	padding: 0.3rem 1rem 1rem;
 `
 
 const TitleBar = styled(Box)`
@@ -69,7 +69,7 @@ export default function Table({ actorList = [], videoList = [], initActorVideoLi
 			) : null}
 
 			{videoList.length > 0 ? (
-				<Box>
+				<Box h="80vh" overflow="hidden">
 					<TitleBar>
 						<Box w="10vw">{isSafetyMode ? '項次' : '番號'}</Box>
 						<Box w="60vw">{isSafetyMode ? '文章名' : '片名'}</Box>
