@@ -1,6 +1,6 @@
 # Jable Downloader
 
-靈感來源: https://github.com/hcjohn463/JableTVDownload。 <br>
+靈感來源: https://github.com/hcjohn463/JableTVDownload <br>
 覺得這麼有趣的功能沒有加上 GUI 實在有點可惜。
 
 ## 使用工具
@@ -32,6 +32,8 @@
 不確定這個 APP 能夠存活或使用多久，如果有什麼建議，或是有 BUG，請開 Issue 或 PR。
 
 如果覺得有趣或用起來還算滿意的話，請大方贈送你/妳們的星星。
+
+合併後的影片拖拉會有卡頓的感覺的話，請參考[此專案](https://github.com/hcjohn463/JableTVDownload)提供的解法。
 
 - 個人 Email: minghang.h@gmail.com
 - Facebook: https://www.facebook.com/mingang.he/
