@@ -39,7 +39,7 @@ export default function Header({ resetAndBack, videoList }) {
 					</Box>
 				)}
 				{/* 開發時才打開此功能 */}
-				<Box d="block" p="0.3rem" cursor="pointer">
+				<Box d="none" p="0.3rem" cursor="pointer">
 					<Square onClick={handleRelaunch}>
 						<AiOutlineReload />
 					</Square>

@@ -121,7 +121,7 @@ export default function App() {
 	}
 	return (
 		<>
-			{/* <Opening /> */}
+			<Opening />
 			{isLoading && <Loading />}
 			<Box h="100vh" w="100vw" minW="600px">
 				<TitleBar />
